@@ -11,8 +11,8 @@ fetch(`http://${location.host}/login/${userId}/${username}`, {
 
 
 
-let ws = new WebSocket(`ws://${location.host}/chating/${userId}`);
-//let ws = new SockJS("http://localhost:8080/chating/"+userId);
+//let ws = new WebSocket(`ws://${location.host}/chating/${userId}`);
+let ws = new SockJS(`http://${location.host}/chating`);
 console.log(ws);
 
 function connect(){

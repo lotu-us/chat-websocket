@@ -1,5 +1,6 @@
 package com.example.chat_websocket.controller;
 
+import com.example.chat_websocket.domain.Member;
 import org.springframework.boot.Banner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,11 @@ public class ChatController {
     @PostMapping("/login/{userId}/{username}")
     @ResponseBody
     public ResponseEntity login(@PathVariable String userId, @PathVariable String username, HttpSession session){
-        session.setAttribute(userId, username);
+        Member loginMember = new Member();
+        loginMember.setUserId(userId);
+        loginMember.setUsername(username);
+
+        session.setAttribute("loginMember", loginMember);
         System.out.println("세션 저장");
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }

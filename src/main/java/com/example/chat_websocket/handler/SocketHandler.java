@@ -1,6 +1,7 @@
 package com.example.chat_websocket.handler;
 
 
+import com.example.chat_websocket.domain.Member;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -33,7 +34,6 @@ public class SocketHandler extends TextWebSocketHandler {
         log.info(session + " 클라이언트 접속");
         //StandardWebSocketSession[id=e408f658-4a5c-0763-8a79-733a7a572a3d, uri=ws://localhost:8080/chating] 클라이언트 접속
         list.add(session);
-
         String senderId = getSenderId(session);
         map.put(senderId, session);
     }
@@ -42,9 +42,10 @@ public class SocketHandler extends TextWebSocketHandler {
     //메시지를 수신하면 실행됨.
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        String senderId = getSenderId(session);  //id=e408f658-4a5c-0763-8a79-733a7a572a3d
+        String senderId = getSenderId(session);
         String payload = message.getPayload();   //전송된 데이터
-        log.info("senderId : "+senderId + " payload : " + payload);
+        //log.info("senderId : "+senderId + " payload : " + payload);
+        System.out.println(payload);
 
         //모든 사용자에게 메시지 발송
         for (WebSocketSession webSocketSession : list) {
@@ -63,8 +64,8 @@ public class SocketHandler extends TextWebSocketHandler {
 
 
     private String getSenderId(WebSocketSession session){
-        //Map<String, Object> httpSessions = session.getAttributes();
-        String userId = session.getUri().getPath().replace("/chating/", "");
-        return userId;
+        Map<String, Object> httpSessions = session.getAttributes();
+        Member loginMember = (Member) httpSessions.get("loginMember");
+        return loginMember.getUserId();
     }
 }
