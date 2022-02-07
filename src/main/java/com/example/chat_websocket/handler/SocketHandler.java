@@ -44,8 +44,7 @@ public class SocketHandler extends TextWebSocketHandler {
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         String senderId = getSenderId(session);
         String payload = message.getPayload();   //전송된 데이터
-        //log.info("senderId : "+senderId + " payload : " + payload);
-        System.out.println(payload);
+        log.info("senderId : "+senderId + " payload : " + payload);
 
         //모든 사용자에게 메시지 발송
         for (WebSocketSession webSocketSession : list) {

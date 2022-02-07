@@ -6,14 +6,36 @@ fetch(`http://${location.host}/login/${userId}/${username}`, {
 })
 .then((response) => {
     console.log("ok");
-    connect();
+    //connect();
+    connectStomp();
 });
 
 
 
 //let ws = new WebSocket(`ws://${location.host}/chating/${userId}`);
-let ws = new SockJS(`http://${location.host}/chating`);
-console.log(ws);
+//let ws = new SockJS(`http://${location.host}/chating`);
+let sock = new SockJS(`http://${location.host}/stomp-chating`);
+
+let client = Stomp.over(sock);
+ws = client;
+
+function connectStomp(){
+    ws.connect({}, function(){
+        console.log("connection open");
+
+        ws.subscribe("/topic/message", function(event){
+            let data = JSON.parse(event.body);
+            let receiver = data.userId;
+            let message = data.message;
+            if(receiver != userId){
+                receive(receiver, message);
+            }
+            //스크롤 맨 아래로
+            document.querySelector(".msg_history").scrollTop = document.querySelector(".msg_history").scrollHeight;
+        });
+    });
+
+}
 
 function connect(){
     ws.onopen = function() {
@@ -65,7 +87,11 @@ $("input.write_msg").on("keyup", function(event){
 function send(){
     let message = $("input.write_msg").val();
     console.log("send message : "+ message);
-    ws.send(message);   //메시지 서버로 전송
+    //ws.send(message);   //메시지 서버로 전송
+    ws.send("/TTT", {}, JSON.stringify({
+        "userId" : userId,
+        "message" : message
+    }));
 
     $(".msg_history").append(`
         <div class="outgoing_msg">

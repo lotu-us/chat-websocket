@@ -4,6 +4,8 @@ import com.example.chat_websocket.domain.Member;
 import org.springframework.boot.Banner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,5 +34,13 @@ public class ChatController {
         session.setAttribute("loginMember", loginMember);
         System.out.println("세션 저장");
         return ResponseEntity.status(HttpStatus.OK).body(null);
+    }
+
+
+    @MessageMapping("/TTT")
+    @SendTo("/topic/message")
+    public String ttt(String message) throws Exception{
+
+        return message;
     }
 }
