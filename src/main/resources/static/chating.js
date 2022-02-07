@@ -1,7 +1,7 @@
 //로그인 기능 대체
 const userId = prompt("아이디를 입력해주세요 : ");
 const username = prompt("이름을 입력해주세요 : ");
-fetch(`http://localhost:8080/login/${userId}/${username}`, {
+fetch(`http://${location.host}/login/${userId}/${username}`, {
     method: "post"
 })
 .then((response) => {
@@ -12,6 +12,7 @@ fetch(`http://localhost:8080/login/${userId}/${username}`, {
 
 
 let ws = new WebSocket(`ws://${location.host}/chating/${userId}`);
+//let ws = new SockJS("http://localhost:8080/chating/"+userId);
 console.log(ws);
 
 function connect(){

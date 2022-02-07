@@ -16,9 +16,10 @@ public class WebSocketConfig implements WebSocketConfigurer {
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         registry.addHandler(socketHandler, "/chating/*")  //구현체 등록. //WebSocket에 접속하기 위한 Endpoint는 /chating
-                .addInterceptors(new HttpSessionHandshakeInterceptor())
+                .addInterceptors(new HttpSessionHandshakeInterceptor());
                 //websocketsession에서 httpsession로 접근할 수 있게 도와줌
-                .setAllowedOrigins("*"); //도메인이 다른 서버에서도 접속 가능하게한다
+                //.setAllowedOrigins("*") //도메인이 다른 서버에서도 접속 가능하게한다
+                //.withSockJS();  //sockJS 가능하게
 
 
     }
